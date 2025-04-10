@@ -1,7 +1,7 @@
 import React from 'react';
 import './Gracias.css';
 
-const Gracias = ({ productos }) => {
+const Gracias = ({ productos, onVolver }) => {
   const total = productos.reduce((sum, p) => sum + p.precio * p.cantidad, 0);
 
   return (
@@ -35,6 +35,10 @@ const Gracias = ({ productos }) => {
             </tr>
           </tfoot>
         </table>
+
+        <button className="btn-volver" onClick={onVolver}>
+          🛍️ Volver a productos
+        </button>
       </div>
     </div>
   );

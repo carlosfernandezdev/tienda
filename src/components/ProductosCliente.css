@@ -1,31 +1,41 @@
-.productos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 20px;
+.productos-cliente {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  color: black;
 }
 
 .producto-card {
-  background-color: white;
-  border-radius: 10px;
-  padding: 15px;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+  width: 180px;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
   text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.producto-card:hover {
+  transform: scale(1.03);
 }
 
 .producto-card img {
   width: 100px;
   height: 100px;
   object-fit: contain;
-  margin-bottom: 10px;
+  margin-bottom: 0.5rem;
 }
 
 .producto-card h3 {
-  margin: 0;
-  font-size: 16px;
-  color: black;
+  margin: 0.5rem 0 0.2rem;
+  font-size: 1.1rem;
 }
- .producto-card p {
-  margin: 5px 0;
-  font-size: 14px;
-  color: black;
+
+.producto-card p {
+  margin: 0;
+  font-weight: bold;
+  color: #555;
 }

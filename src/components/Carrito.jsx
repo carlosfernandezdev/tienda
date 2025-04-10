@@ -1,15 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import './Carrito.css';
 
-const Carrito = () => {
-  const [carrito, setCarrito] = useState([]);
-  const navigate = useNavigate();
-
+const Carrito = ({ carrito, setCarrito, onConfirmarCompra }) => {
+  // Normaliza la cantidad si falta o es inválida
   useEffect(() => {
-    const carritoGuardado = JSON.parse(localStorage.getItem('carrito')) || [];
-    setCarrito(carritoGuardado);
-  }, []);
+    const normalizado = carrito.map((producto) => ({
+      ...producto,
+      cantidad: typeof producto.cantidad === 'number' && producto.cantidad > 0
+        ? producto.cantidad
+        : 1
+    }));
+
+    const necesitaActualizar = JSON.stringify(normalizado) !== JSON.stringify(carrito);
+    if (necesitaActualizar) {
+      setCarrito(normalizado);
+      localStorage.setItem('carrito', JSON.stringify(normalizado));
+    }
+  }, [carrito, setCarrito]);
 
   const guardarCarrito = (nuevoCarrito) => {
     setCarrito(nuevoCarrito);
@@ -18,7 +25,9 @@ const Carrito = () => {
 
   const aumentarCantidad = (id) => {
     const actualizado = carrito.map(producto =>
-      producto.id === id ? { ...producto, cantidad: producto.cantidad + 1 } : producto
+      producto.id === id
+        ? { ...producto, cantidad: (producto.cantidad || 1) + 1 }
+        : producto
     );
     guardarCarrito(actualizado);
   };
@@ -45,9 +54,7 @@ const Carrito = () => {
 
   const confirmarCompra = () => {
     if (carrito.length === 0) return;
-    localStorage.setItem('ultimaCompra', JSON.stringify(carrito));
-    localStorage.removeItem('carrito');
-    navigate('/dashboard?vista=gracias'); 
+    onConfirmarCompra(); // Llama a la lógica del Dashboard
   };
 
   const total = carrito.reduce((sum, p) => sum + p.precio * p.cantidad, 0);
@@ -66,7 +73,7 @@ const Carrito = () => {
                 <th>Producto</th>
                 <th>Cantidad</th>
                 <th>Precio</th>
-                <th>Subtotal</th>
+                <th>Total</th>
                 <th>Acciones</th>
               </tr>
             </thead>

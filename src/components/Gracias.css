@@ -1,25 +1,19 @@
 .gracias {
-    background-color: #f2f2f2;
-    min-height: 100vh;
-    padding: 3rem 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-sizing: border-box;
+    min-height: 80vh;
+    padding: 2rem;
+    color: black;
   }
   
   .gracias-contenido {
-    max-width: 800px;
-    width: 100%;
-    background: white;
-    border-radius: 10px;
+    background-color: white;
+    border-radius: 12px;
     padding: 2rem;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  }
-  
-  .gracias h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
+    width: 100%;
+    max-width: 800px;
   }
   
   .gracias table {
@@ -29,16 +23,23 @@
   }
   
   .gracias th, .gracias td {
-    text-align: left;
     padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
   }
   
-  .gracias th {
-    background-color: #f0f0f0;
+  .btn-volver {
+    margin-top: 1.5rem;
+    padding: 0.7rem 1.4rem;
+    font-size: 1rem;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
   }
   
-  .gracias tfoot td {
-    font-weight: bold;
-    padding-top: 1rem;
+  .btn-volver:hover {
+    background-color: #218838;
   }
   

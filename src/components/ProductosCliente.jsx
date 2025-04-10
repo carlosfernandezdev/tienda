@@ -1,82 +1,64 @@
 import React, { useEffect, useState } from 'react';
-import './ProductosCliente.css';
 import ProductoModal from './ProductoModal';
+import './ProductosCliente.css';
 
-const ProductosCliente = ({ filtros }) => {
+const ProductosCliente = ({ filtros, carrito, setCarrito }) => {
   const [productos, setProductos] = useState([]);
-  const [productosFiltrados, setProductosFiltrados] = useState([]);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
-  const [mostrarModal, setMostrarModal] = useState(false);
 
   useEffect(() => {
-    const guardados = JSON.parse(localStorage.getItem('productos')) || [];
-    setProductos(guardados);
-  }, []);
+    const todos = JSON.parse(localStorage.getItem('productos')) || [];
 
-  useEffect(() => {
-    const filtrarProductos = () => {
-      let filtrados = productos;
+    const filtrados = todos.filter((p) => {
+      const cumpleCategoria = !filtros.categoria || p.categoria === filtros.categoria;
+      const cumplePrecioMin = !filtros.precioMin || p.precio >= parseFloat(filtros.precioMin);
+      const cumplePrecioMax = !filtros.precioMax || p.precio <= parseFloat(filtros.precioMax);
+      const cumpleFechaDesde = !filtros.fechaDesde || p.fecha >= filtros.fechaDesde;
+      const cumpleFechaHasta = !filtros.fechaHasta || p.fecha <= filtros.fechaHasta;
+      return (
+        cumpleCategoria &&
+        cumplePrecioMin &&
+        cumplePrecioMax &&
+        cumpleFechaDesde &&
+        cumpleFechaHasta
+      );
+    });
 
-      if (filtros.categoria && filtros.categoria !== 'Todas') {
-        filtrados = filtrados.filter(p => p.categoria === filtros.categoria);
-      }
-
-      if (filtros.precioMin) {
-        filtrados = filtrados.filter(p => p.precio >= parseFloat(filtros.precioMin));
-      }
-
-      if (filtros.precioMax) {
-        filtrados = filtrados.filter(p => p.precio <= parseFloat(filtros.precioMax));
-      }
-
-      if (filtros.fechaDesde) {
-        filtrados = filtrados.filter(p => new Date(p.fecha) >= new Date(filtros.fechaDesde));
-      }
-
-      if (filtros.fechaHasta) {
-        filtrados = filtrados.filter(p => new Date(p.fecha) <= new Date(filtros.fechaHasta));
-      }
-
-      setProductosFiltrados(filtrados);
-    };
-
-    filtrarProductos();
-  }, [filtros, productos]);
+    setProductos(filtrados);
+  }, [filtros]);
 
   const abrirModal = (producto) => {
     setProductoSeleccionado(producto);
-    setMostrarModal(true);
   };
 
   const cerrarModal = () => {
     setProductoSeleccionado(null);
-    setMostrarModal(false);
   };
 
   return (
     <div className="productos-cliente">
-      {productosFiltrados.length === 0 ? (
-        <p className="no-productos">🥲 No hay productos que coincidan con los filtros.</p>
+      {productos.length === 0 ? (
+        <p className="sin-resultados">No hay productos que coincidan con los filtros.</p>
       ) : (
-        <div className="productos-grid">
-          {productosFiltrados.map((producto) => (
-            <div
-              key={producto.id}
-              className="producto-card"
-              onClick={() => abrirModal(producto)}
-            >
-              <img src={producto.imagen} alt={producto.nombre} />
-              <h3>{producto.nombre}</h3>
-              <p>${producto.precio}</p>
-            </div>
-          ))}
-        </div>
+        productos.map((producto) => (
+          <div
+            key={producto.id}
+            className="producto-card"
+            onClick={() => abrirModal(producto)}
+          >
+            <img src={producto.imagen} alt={producto.nombre} />
+            <h3>{producto.nombre}</h3>
+            <p>${producto.precio}</p>
+          </div>
+        ))
       )}
 
-      {mostrarModal && (
+      {productoSeleccionado && (
         <ProductoModal
           producto={productoSeleccionado}
           onClose={cerrarModal}
+          carrito={carrito}
+          setCarrito={setCarrito}
         />
       )}
     </div>

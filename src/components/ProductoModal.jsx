@@ -1,24 +1,22 @@
 import React from 'react';
 import './ProductoModal.css';
 
-const ProductoModal = ({ producto, onClose }) => {
+const ProductoModal = ({ producto, onClose, carrito, setCarrito }) => {
   if (!producto) return null;
 
   const agregarAlCarrito = () => {
-    const carritoActual = JSON.parse(localStorage.getItem('carrito')) || [];
+    const actualizado = [...carrito];
+    const existe = actualizado.find(p => p.id === producto.id);
 
-    // Buscar si el producto ya está en el carrito
-    const existe = carritoActual.find(p => p.id === producto.id);
-
-    if (!existe) {
-      carritoActual.push({ ...producto, cantidad: 1 });
-    } else {
+    if (existe) {
       existe.cantidad += 1;
+    } else {
+      actualizado.push({ ...producto, cantidad: 1 });
     }
 
-    localStorage.setItem('carrito', JSON.stringify(carritoActual));
-    alert('Producto agregado al carrito');
-    onClose(); // cerrar modal después de agregar
+    setCarrito(actualizado);
+    localStorage.setItem('carrito', JSON.stringify(actualizado));
+    onClose();
   };
 
   return (
