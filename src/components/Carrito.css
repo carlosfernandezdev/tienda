@@ -1,0 +1,94 @@
+.carrito {
+    padding: 2rem;
+    color: #000000;
+  }
+  
+  .carrito-vacio {
+    margin-top: 1rem;
+    font-style: italic;
+    color: #666;
+  }
+  
+  .carrito-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  
+  .carrito-tabla th,
+  .carrito-tabla td {
+    padding: 0.8rem;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .producto-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: #000000;
+   
+  }
+  
+  .producto-info img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+  }
+  
+  .cantidad-controles {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #000000;
+  }
+  
+  .cantidad-controles button {
+    padding: 0.2rem 0.6rem;
+    border: none;
+    background: #9f9e9e;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+  
+  .eliminar-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  
+  .carrito-total {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    text-align: right;
+    color: #000000;
+  }
+  
+  .carrito-acciones {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+  
+  .vaciar-btn,
+  .comprar-btn {
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .vaciar-btn {
+    background: #ccc;
+  }
+  
+  .comprar-btn {
+    background: orange;
+    color: white;
+  }
+  

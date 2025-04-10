@@ -1,0 +1,97 @@
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #ececec;
+  font-family: 'Georgia', serif;
+  padding: 0 2rem;
+  gap: 4rem;
+  flex-wrap: wrap;
+}
+
+.login-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 300px;
+}
+
+.login-logo img {
+  width: 120px;
+  height: auto;
+}
+
+.login-logo h1 {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 2rem;
+  font-family: 'Italianno', cursive;
+  color: #444;
+  margin-top: 1rem;
+}
+
+.login-card {
+  background-color: white;
+  padding: 2.5rem 2rem;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 320px;
+  text-align: center;
+}
+
+.login-card h2 {
+  font-style: italic;
+  font-weight: 400;
+  margin-bottom: 1rem;
+  color: #444;
+  font-family: 'italianno', cursive;
+  font-size: 3rem;
+}
+
+.login-card input {
+  display: block;
+  width: 100%;
+  padding: 0.6rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  border: none;
+  background-color: #ddd;
+  font-style: italic;
+}
+
+.login-card button {
+  background-color: #ff6b61;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 15px;
+  font-style: italic;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  transition: 0.3s;
+}
+
+.login-card button:hover {
+  background-color: #ff4c4c;
+}
+
+.login-error {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.login-link {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color:#444;
+}
+
+.login-link a {
+  color: #3366ff;
+  text-decoration: none;
+}

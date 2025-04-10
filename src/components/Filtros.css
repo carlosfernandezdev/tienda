@@ -1,0 +1,42 @@
+.filtros-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .filtro-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .filtro-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  .input-row {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .input-row input,
+  .filtros-container select {
+    flex: 1;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    background-color: #fff;
+    color: #333;
+  }
+  .filtros-container label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  .filtros-container h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #333;
+  }
