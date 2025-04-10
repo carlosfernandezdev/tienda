@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { obtenerUsuario } from '../db';
+import { login } from '../api'; // ✅ usamos la función del backend
 import './Login.css';
 import logo from '../assets/tienda.png';
 
@@ -12,13 +12,13 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const user = await obtenerUsuario(usuarioInput);
 
-    if (user && user.usuario === usuarioInput && user.password === passwordInput) {
+    try {
+      const user = await login(usuarioInput, passwordInput); // ✅ fetch al backend
       localStorage.setItem('usuario', JSON.stringify(user));
       navigate('/dashboard');
-    } else {
-      setError('Usuario no encontrado o contraseña incorrecta. Regístrate primero.');
+    } catch (err) {
+      setError(err.message || 'Error al iniciar sesión');
     }
   };
 

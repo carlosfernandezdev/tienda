@@ -14,6 +14,7 @@ const ProductoModal = ({ producto, onClose, carrito, setCarrito }) => {
       actualizado.push({ ...producto, cantidad: 1 });
     }
 
+    // Actualiza estado y sincroniza con localStorage
     setCarrito(actualizado);
     localStorage.setItem('carrito', JSON.stringify(actualizado));
     onClose();

@@ -16,7 +16,7 @@ const Header = ({ username }) => {
       </div>
 
       <div className="header-right">
-        <span className="header-user">👤 {username}</span>
+        <span className="header-user">👤Usuario: {username}</span>
         <button className="logout-btn" onClick={handleLogout}>Salir</button>
       </div>
     </header>

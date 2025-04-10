@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { guardarUsuario } from '../db';
+import { register } from '../api'; // ✅ usamos la función del backend
 import logo from '../assets/tienda.png';
 import './Register.css';
 
@@ -19,11 +19,10 @@ const Register = () => {
     }
 
     try {
-      await guardarUsuario({ usuario, password, rol });
+      await register(usuario, password, rol); // ✅ se conecta al backend
       navigate('/');
-    // eslint-disable-next-line no-unused-vars
     } catch (err) {
-      setError('Error al registrar usuario');
+      setError(err.message || 'Error al registrar usuario');
     }
   };
 

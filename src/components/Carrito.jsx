@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import './Carrito.css';
+import { registrarCompra } from '../api'; // ✅ función fetch para registrar
 
 const Carrito = ({ carrito, setCarrito, onConfirmarCompra }) => {
-  // Normaliza la cantidad si falta o es inválida
   useEffect(() => {
     const normalizado = carrito.map((producto) => ({
       ...producto,
@@ -52,9 +52,16 @@ const Carrito = ({ carrito, setCarrito, onConfirmarCompra }) => {
     guardarCarrito([]);
   };
 
-  const confirmarCompra = () => {
+  const confirmarCompra = async () => {
     if (carrito.length === 0) return;
-    onConfirmarCompra(); // Llama a la lógica del Dashboard
+
+    try {
+      await registrarCompra(carrito); // ✅ enviar compra al backend
+      onConfirmarCompra();            // ✅ cambiar a vista "Gracias"
+    } catch (err) {
+      console.error('Error al registrar la compra:', err);
+      alert('Ocurrió un error al confirmar la compra');
+    }
   };
 
   const total = carrito.reduce((sum, p) => sum + p.precio * p.cantidad, 0);

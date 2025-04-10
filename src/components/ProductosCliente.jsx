@@ -1,30 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import ProductoModal from './ProductoModal';
 import './ProductosCliente.css';
+import { getProductos } from '../api'; // ✅ nueva importación
 
 const ProductosCliente = ({ filtros, carrito, setCarrito }) => {
   const [productos, setProductos] = useState([]);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
 
   useEffect(() => {
-    const todos = JSON.parse(localStorage.getItem('productos')) || [];
+    const fetchProductos = async () => {
+      try {
+        const todos = await getProductos(); // ✅ ahora desde el backend
 
-    const filtrados = todos.filter((p) => {
-      const cumpleCategoria = !filtros.categoria || p.categoria === filtros.categoria;
-      const cumplePrecioMin = !filtros.precioMin || p.precio >= parseFloat(filtros.precioMin);
-      const cumplePrecioMax = !filtros.precioMax || p.precio <= parseFloat(filtros.precioMax);
-      const cumpleFechaDesde = !filtros.fechaDesde || p.fecha >= filtros.fechaDesde;
-      const cumpleFechaHasta = !filtros.fechaHasta || p.fecha <= filtros.fechaHasta;
-      return (
-        cumpleCategoria &&
-        cumplePrecioMin &&
-        cumplePrecioMax &&
-        cumpleFechaDesde &&
-        cumpleFechaHasta
-      );
-    });
+        const filtrados = todos.filter((p) => {
+          const cumpleCategoria = !filtros.categoria || p.categoria === filtros.categoria;
+          const cumplePrecioMin = !filtros.precioMin || p.precio >= parseFloat(filtros.precioMin);
+          const cumplePrecioMax = !filtros.precioMax || p.precio <= parseFloat(filtros.precioMax);
+          const cumpleFechaDesde = !filtros.fechaDesde || p.fecha >= filtros.fechaDesde;
+          const cumpleFechaHasta = !filtros.fechaHasta || p.fecha <= filtros.fechaHasta;
+          return (
+            cumpleCategoria &&
+            cumplePrecioMin &&
+            cumplePrecioMax &&
+            cumpleFechaDesde &&
+            cumpleFechaHasta
+          );
+        });
 
-    setProductos(filtrados);
+        setProductos(filtrados);
+      } catch (err) {
+        console.error('Error al obtener productos:', err);
+        setProductos([]);
+      }
+    };
+
+    fetchProductos();
   }, [filtros]);
 
   const abrirModal = (producto) => {
