@@ -1,7 +1,7 @@
 import React from 'react';
 import './Filtros.css';
 
-const Filtros = ({ filtros, setFiltros, categoriasDisponibles }) => {
+const Filtros = ({ filtros, setFiltros, categoriasDisponibles = [] }) => {
   return (
     <div className="filtros-container">
       <h3>Filtros</h3>

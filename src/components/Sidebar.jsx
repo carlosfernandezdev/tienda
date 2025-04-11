@@ -8,7 +8,7 @@ const Sidebar = ({
   vistaActual,
   filtros,
   setFiltros,
-  categoriasDisponibles
+  categoriasDisponibles = [] 
 }) => {
   const mostrarFiltros = vistaActual === 'productos';
 

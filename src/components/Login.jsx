@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../api'; // ✅ usamos la función del backend
+import { login } from '../api'; 
 import './Login.css';
 import logo from '../assets/tienda.png';
 
@@ -14,7 +14,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const user = await login(usuarioInput, passwordInput); // ✅ fetch al backend
+      const user = await login(usuarioInput.trim(), passwordInput); 
       localStorage.setItem('usuario', JSON.stringify(user));
       navigate('/dashboard');
     } catch (err) {

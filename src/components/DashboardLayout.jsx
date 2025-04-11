@@ -10,7 +10,7 @@ const DashboardLayout = ({
   onSelectView,
   filtros,
   setFiltros,
-  categorias,
+  categorias = [],
   children
 }) => {
   return (

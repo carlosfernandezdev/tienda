@@ -5,16 +5,24 @@ const ProductoModal = ({ producto, onClose, carrito, setCarrito }) => {
   if (!producto) return null;
 
   const agregarAlCarrito = () => {
+    if (!producto.id) {
+      alert('Este producto no tiene un ID válido');
+      return;
+    }
+
     const actualizado = [...carrito];
     const existe = actualizado.find(p => p.id === producto.id);
 
     if (existe) {
+      if (producto.stock && existe.cantidad >= producto.stock) {
+        alert('No hay suficiente stock disponible');
+        return;
+      }
       existe.cantidad += 1;
     } else {
       actualizado.push({ ...producto, cantidad: 1 });
     }
 
-    // Actualiza estado y sincroniza con localStorage
     setCarrito(actualizado);
     localStorage.setItem('carrito', JSON.stringify(actualizado));
     onClose();

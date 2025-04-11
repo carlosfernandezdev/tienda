@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { register } from '../api'; // ✅ usamos la función del backend
+import { register } from '../api'; 
 import logo from '../assets/tienda.png';
 import './Register.css';
 
@@ -13,13 +13,14 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    if (!usuario || !password) {
+
+    if (!usuario.trim() || !password) {
       setError('Todos los campos son obligatorios');
       return;
     }
 
     try {
-      await register(usuario, password, rol); // ✅ se conecta al backend
+      await register(usuario.trim(), password, rol); 
       navigate('/');
     } catch (err) {
       setError(err.message || 'Error al registrar usuario');

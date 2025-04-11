@@ -3,6 +3,7 @@ import DashboardLayout from './DashboardLayout';
 import ProductosCliente from './ProductosCliente';
 import Carrito from './Carrito';
 import Gracias from './Gracias';
+import { getProductos } from '../api'; 
 
 const Dashboard = () => {
   const [usuario, setUsuario] = useState(null);
@@ -14,6 +15,7 @@ const Dashboard = () => {
     fechaDesde: '',
     fechaHasta: ''
   });
+  const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [carrito, setCarrito] = useState([]);
   const [ultimaCompra, setUltimaCompra] = useState([]);
@@ -23,48 +25,21 @@ const Dashboard = () => {
     if (userData) setUsuario(userData);
     else setUsuario({ usuario: 'Invitado', rol: 'cliente' });
 
-    const productosGuardados = JSON.parse(localStorage.getItem('productos'));
-    if (!productosGuardados || productosGuardados.length === 0) {
-      const demo = [
-        {
-          id: 1,
-          nombre: 'Camisa',
-          categoria: 'Ropa',
-          precio: 20,
-          proveedor: 'Proveedor A',
-          stock: 10,
-          fecha: '2025-04-01',
-          imagen: 'https://cdn-icons-png.flaticon.com/512/892/892458.png'
-        },
-        {
-          id: 2,
-          nombre: 'Pantalón',
-          categoria: 'Ropa',
-          precio: 35,
-          proveedor: 'Proveedor B',
-          stock: 5,
-          fecha: '2025-04-03',
-          imagen: 'https://cdn-icons-png.flaticon.com/512/892/892482.png'
-        },
-        {
-          id: 3,
-          nombre: 'Zapatos',
-          categoria: 'Calzado',
-          precio: 50,
-          proveedor: 'Proveedor C',
-          stock: 8,
-          fecha: '2025-04-04',
-          imagen: 'https://cdn-icons-png.flaticon.com/512/892/892499.png'
-        }
-      ];
-      localStorage.setItem('productos', JSON.stringify(demo));
-      setCategorias([...new Set(demo.map(p => p.categoria))]);
-    } else {
-      setCategorias([...new Set(productosGuardados.map(p => p.categoria))]);
-    }
-
     const carritoGuardado = JSON.parse(localStorage.getItem('carrito')) || [];
     setCarrito(carritoGuardado);
+
+    const cargarProductos = async () => {
+      try {
+        const productosDesdeApi = await getProductos();
+        setProductos(productosDesdeApi);
+        const categoriasUnicas = [...new Set(productosDesdeApi.map(p => p.categoria))];
+        setCategorias(categoriasUnicas);
+      } catch (error) {
+        console.error('Error al obtener productos:', error);
+      }
+    };
+
+    cargarProductos();
   }, []);
 
   const confirmarCompra = () => {
@@ -87,7 +62,12 @@ const Dashboard = () => {
       categorias={categorias}
     >
       {vistaActual === 'productos' && (
-        <ProductosCliente filtros={filtros} carrito={carrito} setCarrito={setCarrito} />
+        <ProductosCliente
+          filtros={filtros}
+          carrito={carrito}
+          setCarrito={setCarrito}
+          productos={productos}
+        />
       )}
       {vistaActual === 'carrito' && (
         <Carrito carrito={carrito} setCarrito={setCarrito} onConfirmarCompra={confirmarCompra} />

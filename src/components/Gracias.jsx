@@ -1,8 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Gracias.css';
 
-const Gracias = ({ productos, onVolver }) => {
-  const total = productos.reduce((sum, p) => sum + p.precio * p.cantidad, 0);
+const Gracias = ({ onVolver }) => {
+  const [productos, setProductos] = useState([]);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    const usuario = JSON.parse(localStorage.getItem('usuario'));
+    if (!usuario) return;
+
+    fetch(`http://localhost:4000/api/compras/ultima/${usuario.id}`)
+      .then(res => res.json())
+      .then(data => {
+        setProductos(data.detalles || []);
+        const totalCalculado = data.detalles.reduce((sum, p) => sum + p.precio * p.cantidad, 0);
+        setTotal(totalCalculado);
+      })
+      .catch(() => {
+        setProductos([]);
+        setTotal(0);
+      });
+  }, []);
 
   return (
     <div className="gracias">

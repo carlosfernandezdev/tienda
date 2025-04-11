@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import './Carrito.css';
-import { registrarCompra } from '../api'; // ✅ función fetch para registrar
+import { registrarCompra } from '../api';
 
 const Carrito = ({ carrito, setCarrito, onConfirmarCompra }) => {
   useEffect(() => {
@@ -55,9 +55,12 @@ const Carrito = ({ carrito, setCarrito, onConfirmarCompra }) => {
   const confirmarCompra = async () => {
     if (carrito.length === 0) return;
 
+    const usuario = JSON.parse(localStorage.getItem('usuario'));
+    const usuario_id = usuario?.id || null; 
+
     try {
-      await registrarCompra(carrito); // ✅ enviar compra al backend
-      onConfirmarCompra();            // ✅ cambiar a vista "Gracias"
+      await registrarCompra(carrito, usuario_id); 
+      onConfirmarCompra();
     } catch (err) {
       console.error('Error al registrar la compra:', err);
       alert('Ocurrió un error al confirmar la compra');
