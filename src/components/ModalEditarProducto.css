@@ -1,0 +1,100 @@
+.modal-editar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-editar {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+    position: relative;
+  }
+  
+  .modal-editar h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    color: #222;
+  }
+
+  .modal-editar h3 {
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+    color: #555;
+  }
+  
+  .modal-editar form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .modal-editar input,
+  .modal-editar select {
+    padding: 10px;
+    margin-bottom: 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  
+  .modal-editar .acciones {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .modal-editar .acciones button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .modal-editar .acciones .guardar {
+    background: #28a745;
+    color: white;
+  }
+  
+  .modal-editar .acciones .guardar:hover {
+    background: #218838;
+  }
+  
+  .modal-editar .acciones .cancelar {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .modal-editar .acciones .cancelar:hover {
+    background: #c82333;
+  }
+  
+  .cerrar-modal {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 20px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #888;
+  }
+  
+  .cerrar-modal:hover {
+    color: #000;
+  }
+  

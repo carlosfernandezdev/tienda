@@ -3,11 +3,12 @@ const router = express.Router();
 const db = require('../db');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
-//  Configuración de multer para guardar imágenes en la carpeta /uploads
+// Configuración de multer para guardar imágenes
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '..', 'uploads')); // guarda en /uploads
+    cb(null, path.join(__dirname, '..', 'uploads'));
   },
   filename: (req, file, cb) => {
     const uniqueName = Date.now() + '-' + file.originalname;
@@ -28,7 +29,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// 🆕 POST producto con imagen 
+// POST nuevo producto
 router.post('/', upload.single('imagen'), async (req, res) => {
   const { nombre, categoria, precio, proveedor, stock, fecha } = req.body;
   const archivoImagen = req.file;
@@ -49,6 +50,72 @@ router.post('/', upload.single('imagen'), async (req, res) => {
   } catch (error) {
     console.error('Error al registrar producto', error);
     res.status(500).json({ error: 'Error al registrar producto' });
+  }
+});
+
+// ✅ PUT para editar un producto
+router.put('/:id', upload.single('imagen'), async (req, res) => {
+  const { id } = req.params;
+  const { nombre, categoria, precio, proveedor, stock, fecha } = req.body;
+  const archivoImagen = req.file;
+
+  try {
+    // Si se sube una nueva imagen, actualizamos también esa columna
+    if (archivoImagen) {
+      const rutaImagen = `/uploads/${archivoImagen.filename}`;
+
+      // Buscar imagen anterior y eliminarla (opcional pero recomendado)
+      const productoAnterior = await db.query('SELECT imagen FROM productos WHERE id = $1', [id]);
+      const anterior = productoAnterior.rows[0]?.imagen;
+      if (anterior) {
+        const imagenPath = path.join(__dirname, '..', anterior);
+        if (fs.existsSync(imagenPath)) fs.unlinkSync(imagenPath);
+      }
+
+      const result = await db.query(
+        `UPDATE productos
+         SET nombre=$1, categoria=$2, precio=$3, proveedor=$4, stock=$5, fecha=$6, imagen=$7
+         WHERE id=$8 RETURNING *`,
+        [nombre, categoria, precio, proveedor, stock, fecha, rutaImagen, id]
+      );
+      return res.json(result.rows[0]);
+    }
+
+    // Sin nueva imagen
+    const result = await db.query(
+      `UPDATE productos
+       SET nombre=$1, categoria=$2, precio=$3, proveedor=$4, stock=$5, fecha=$6
+       WHERE id=$7 RETURNING *`,
+      [nombre, categoria, precio, proveedor, stock, fecha, id]
+    );
+    res.json(result.rows[0]);
+
+  } catch (error) {
+    console.error('Error al editar producto', error);
+    res.status(500).json({ error: 'Error al editar producto' });
+  }
+});
+
+// DELETE producto
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Obtener imagen para eliminar del disco
+    const producto = await db.query('SELECT imagen FROM productos WHERE id = $1', [id]);
+    const imagen = producto.rows[0]?.imagen;
+
+    if (imagen) {
+      const imagenPath = path.join(__dirname, '..', imagen);
+      if (fs.existsSync(imagenPath)) fs.unlinkSync(imagenPath);
+    }
+
+    await db.query('DELETE FROM productos WHERE id = $1', [id]);
+    res.json({ mensaje: 'Producto eliminado' });
+
+  } catch (error) {
+    console.error('Error al eliminar producto', error);
+    res.status(500).json({ error: 'Error al eliminar producto' });
   }
 });
 

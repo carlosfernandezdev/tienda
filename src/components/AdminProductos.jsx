@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './AdminProductos.css';
+import ModalEditarProducto from './ModalEditarProducto';
 
-const AdminProductos = ({ productos, recargarProductos }) => {
+const AdminProductos = ({ productos, onRecargar }) => {
+  const [productoSeleccionado, setProductoSeleccionado] = useState(null);
+
   const handleEditar = (producto) => {
-    alert(`Función para editar: ${producto.nombre}`);
-    // Futuro: abrir modal o vista de edición
+    setProductoSeleccionado(producto);
+  };
+
+  const cerrarModal = () => {
+    setProductoSeleccionado(null);
   };
 
   const handleEliminar = async (id) => {
@@ -18,7 +24,7 @@ const AdminProductos = ({ productos, recargarProductos }) => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Error al eliminar');
       alert('Producto eliminado');
-      recargarProductos();
+      onRecargar(); 
     } catch (err) {
       console.error('Error eliminando producto:', err);
       alert('No se pudo eliminar el producto.');
@@ -32,6 +38,7 @@ const AdminProductos = ({ productos, recargarProductos }) => {
   return (
     <div className="admin-productos">
       <h2>🛠️ Panel de Productos</h2>
+
       {productos.length === 0 ? (
         <p>No hay productos disponibles.</p>
       ) : (
@@ -72,6 +79,14 @@ const AdminProductos = ({ productos, recargarProductos }) => {
             ))}
           </tbody>
         </table>
+      )}
+
+      {productoSeleccionado && (
+        <ModalEditarProducto
+          producto={productoSeleccionado}
+          onClose={cerrarModal}
+          onActualizado={onRecargar}
+        />
       )}
     </div>
   );
