@@ -15,7 +15,6 @@ Sistema completo de tienda en línea con roles de cliente y administrador. Inclu
 ### Frontend
 - React + Vite
 - CSS personalizado
-- IndexedDB (opcional) para sesiones
 
 ### Backend
 - Node.js + Express
@@ -46,7 +45,7 @@ Sistema completo de tienda en línea con roles de cliente y administrador. Inclu
 
 ### 1. Clonar el repositorio
 ```bash
-git clone https://github.com/tu-usuario/tienda-carlos.git
+git clone https://github.com/carlosfernandezdev/tienda-carlos.git
 cd tienda-carlos
 ```
 
@@ -141,10 +140,10 @@ Las imágenes se suben a `/uploads` y se sirven desde el backend en la ruta `/up
 ## ✍️ Autor
 
 **Carlos Fernández**  
-Proyecto académico desarrollado con fines de aprendizaje.
+Proyecto académico desarrollado para Manejo de Frameworks.
 
 ---
 
 ## 🧾 Licencia
 
-Este proyecto es de uso libre para fines educativos.
+Este proyecto es mio, no plagiar (guiño guiño).
