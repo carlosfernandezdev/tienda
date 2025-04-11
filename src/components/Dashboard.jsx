@@ -3,7 +3,8 @@ import DashboardLayout from './DashboardLayout';
 import ProductosCliente from './ProductosCliente';
 import Carrito from './Carrito';
 import Gracias from './Gracias';
-import { getProductos } from '../api'; 
+import AdminProductos from './AdminProductos'; // ✅ importación admin
+import { getProductos } from '../api';
 
 const Dashboard = () => {
   const [usuario, setUsuario] = useState(null);
@@ -28,19 +29,19 @@ const Dashboard = () => {
     const carritoGuardado = JSON.parse(localStorage.getItem('carrito')) || [];
     setCarrito(carritoGuardado);
 
-    const cargarProductos = async () => {
-      try {
-        const productosDesdeApi = await getProductos();
-        setProductos(productosDesdeApi);
-        const categoriasUnicas = [...new Set(productosDesdeApi.map(p => p.categoria))];
-        setCategorias(categoriasUnicas);
-      } catch (error) {
-        console.error('Error al obtener productos:', error);
-      }
-    };
-
-    cargarProductos();
+    refrescarProductos();
   }, []);
+
+  const refrescarProductos = async () => {
+    try {
+      const productosDesdeApi = await getProductos();
+      setProductos(productosDesdeApi);
+      const categoriasUnicas = [...new Set(productosDesdeApi.map(p => p.categoria))];
+      setCategorias(categoriasUnicas);
+    } catch (error) {
+      console.error('Error al obtener productos:', error);
+    }
+  };
 
   const confirmarCompra = () => {
     setUltimaCompra(carrito);
@@ -69,11 +70,27 @@ const Dashboard = () => {
           productos={productos}
         />
       )}
+
       {vistaActual === 'carrito' && (
-        <Carrito carrito={carrito} setCarrito={setCarrito} onConfirmarCompra={confirmarCompra} />
+        <Carrito
+          carrito={carrito}
+          setCarrito={setCarrito}
+          onConfirmarCompra={confirmarCompra}
+        />
       )}
+
       {vistaActual === 'gracias' && (
-        <Gracias productos={ultimaCompra} onVolver={() => setVistaActual('productos')} />
+        <Gracias
+          productos={ultimaCompra}
+          onVolver={() => setVistaActual('productos')}
+        />
+      )}
+
+      {vistaActual === 'admin' && usuario?.rol === 'admin' && (
+        <AdminProductos
+          productos={productos}
+          onRecargar={refrescarProductos}
+        />
       )}
     </DashboardLayout>
   );

@@ -60,4 +60,12 @@ export const registrarCompra = async (carrito, usuario_id) => {
     return data;
   };
   
-  
+  //Eliminar producto (admin)
+  export const eliminarProducto = async (id) => {
+    const response = await fetch(`${API_URL}/productos/${id}`, {
+      method: 'DELETE'
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Error al eliminar producto');
+    return data;
+  };
