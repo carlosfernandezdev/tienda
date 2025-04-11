@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ProductoModal from './ProductoModal';
 import './ProductosCliente.css';
-import { getProductos } from '../api'; 
+import { getProductos } from '../api';
 
 const ProductosCliente = ({ filtros, carrito, setCarrito }) => {
   const [productos, setProductos] = useState([]);
@@ -51,7 +51,11 @@ const ProductosCliente = ({ filtros, carrito, setCarrito }) => {
             className="producto-card"
             onClick={() => abrirModal(producto)}
           >
-            <img src={producto.imagen} alt={producto.nombre} />
+            <img
+              src={`http://localhost:4000${producto.imagen}`}
+              alt={producto.nombre}
+              className="producto-imagen"
+            />
             <h3>{producto.nombre}</h3>
             <p>${producto.precio}</p>
           </div>

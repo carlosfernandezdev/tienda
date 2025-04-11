@@ -3,12 +3,14 @@ import DashboardLayout from './DashboardLayout';
 import ProductosCliente from './ProductosCliente';
 import Carrito from './Carrito';
 import Gracias from './Gracias';
-import AdminProductos from './AdminProductos'; // ✅ importación admin
+import AdminProductos from './AdminProductos';
+import FormularioProducto from './FormularioProducto';
+import ComprasAdmin from './ComprasAdmin';
 import { getProductos } from '../api';
 
 const Dashboard = () => {
   const [usuario, setUsuario] = useState(null);
-  const [vistaActual, setVistaActual] = useState('productos');
+  const [vistaActual, setVistaActual] = useState('');
   const [filtros, setFiltros] = useState({
     categoria: '',
     precioMin: '',
@@ -23,8 +25,13 @@ const Dashboard = () => {
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem('usuario'));
-    if (userData) setUsuario(userData);
-    else setUsuario({ usuario: 'Invitado', rol: 'cliente' });
+    if (userData) {
+      setUsuario(userData);
+      setVistaActual(userData.rol === 'admin' ? 'admin' : 'productos');
+    } else {
+      setUsuario({ usuario: 'Invitado', rol: 'cliente' });
+      setVistaActual('productos');
+    }
 
     const carritoGuardado = JSON.parse(localStorage.getItem('carrito')) || [];
     setCarrito(carritoGuardado);
@@ -52,17 +59,31 @@ const Dashboard = () => {
 
   if (!usuario) return <p>Cargando...</p>;
 
+  const esAdmin = usuario.rol === 'admin';
+
   return (
     <DashboardLayout
       username={usuario.usuario}
-      isAdmin={usuario.rol === 'admin'}
+      isAdmin={esAdmin}
       vistaActual={vistaActual}
       onSelectView={setVistaActual}
       filtros={filtros}
       setFiltros={setFiltros}
       categorias={categorias}
     >
-      {vistaActual === 'productos' && (
+      {esAdmin && vistaActual === 'admin' && (
+        <AdminProductos productos={productos} onRecargar={refrescarProductos} />
+      )}
+
+      {esAdmin && vistaActual === 'nuevo' && (
+        <FormularioProducto onProductoAgregado={refrescarProductos} />
+      )}
+
+      {esAdmin && vistaActual === 'compras' && (
+        <ComprasAdmin />
+      )}
+
+      {!esAdmin && vistaActual === 'productos' && (
         <ProductosCliente
           filtros={filtros}
           carrito={carrito}
@@ -71,7 +92,7 @@ const Dashboard = () => {
         />
       )}
 
-      {vistaActual === 'carrito' && (
+      {!esAdmin && vistaActual === 'carrito' && (
         <Carrito
           carrito={carrito}
           setCarrito={setCarrito}
@@ -79,17 +100,10 @@ const Dashboard = () => {
         />
       )}
 
-      {vistaActual === 'gracias' && (
+      {!esAdmin && vistaActual === 'gracias' && (
         <Gracias
           productos={ultimaCompra}
           onVolver={() => setVistaActual('productos')}
-        />
-      )}
-
-      {vistaActual === 'admin' && usuario?.rol === 'admin' && (
-        <AdminProductos
-          productos={productos}
-          onRecargar={refrescarProductos}
         />
       )}
     </DashboardLayout>

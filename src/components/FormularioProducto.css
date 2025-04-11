@@ -1,0 +1,55 @@
+/* FormularioProducto.css */
+
+.formulario-producto {
+    max-width: 600px;
+    margin: auto;
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .formulario-producto h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: black;
+  }
+  
+  .formulario-producto form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: #f9f9f9;
+  }
+  
+  .formulario-producto input[type="text"],
+  .formulario-producto input[type="number"],
+  .formulario-producto input[type="date"],
+  .formulario-producto input[type="file"] {
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .formulario-producto button {
+    padding: 0.9rem;
+    background-color: #3b82f6;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .formulario-producto button:hover {
+    background-color: #2563eb;
+  }
+  
+  .mensaje {
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: bold;
+  }
+  

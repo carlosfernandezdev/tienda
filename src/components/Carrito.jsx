@@ -56,10 +56,10 @@ const Carrito = ({ carrito, setCarrito, onConfirmarCompra }) => {
     if (carrito.length === 0) return;
 
     const usuario = JSON.parse(localStorage.getItem('usuario'));
-    const usuario_id = usuario?.id || null; 
+    const usuario_id = usuario?.id || null;
 
     try {
-      await registrarCompra(carrito, usuario_id); 
+      await registrarCompra(carrito, usuario_id);
       onConfirmarCompra();
     } catch (err) {
       console.error('Error al registrar la compra:', err);
@@ -68,6 +68,12 @@ const Carrito = ({ carrito, setCarrito, onConfirmarCompra }) => {
   };
 
   const total = carrito.reduce((sum, p) => sum + p.precio * p.cantidad, 0);
+
+  const obtenerUrlImagen = (imagen) => {
+    return imagen.startsWith('/uploads')
+      ? `http://localhost:4000${imagen}`
+      : `http://localhost:4000/uploads/${imagen}`;
+  };
 
   return (
     <div className="carrito">
@@ -91,7 +97,7 @@ const Carrito = ({ carrito, setCarrito, onConfirmarCompra }) => {
               {carrito.map((producto) => (
                 <tr key={producto.id}>
                   <td className="producto-info">
-                    <img src={producto.imagen} alt={producto.nombre} />
+                    <img src={obtenerUrlImagen(producto.imagen)} alt={producto.nombre} />
                     <span>{producto.nombre}</span>
                   </td>
                   <td>

@@ -8,7 +8,7 @@ const Sidebar = ({
   vistaActual,
   filtros,
   setFiltros,
-  categoriasDisponibles = [] 
+  categoriasDisponibles = []
 }) => {
   const mostrarFiltros = vistaActual === 'productos';
 
@@ -39,20 +39,30 @@ const Sidebar = ({
       )}
 
       <div className="sidebar-footer">
-        {vistaActual === 'productos' ? (
-          <button className="sidebar-btn carrito-btn" onClick={() => onSelectView('carrito')}>
-            🛒 Ver carrito
-          </button>
-        ) : (
-          <button className="sidebar-btn" onClick={() => onSelectView('productos')}>
-            🧺 Ver productos
-          </button>
+        {!isAdmin && (
+          vistaActual === 'productos' ? (
+            <button className="sidebar-btn carrito-btn" onClick={() => onSelectView('carrito')}>
+              🛒 Ver carrito
+            </button>
+          ) : (
+            <button className="sidebar-btn" onClick={() => onSelectView('productos')}>
+              🧺 Ver productos
+            </button>
+          )
         )}
 
         {isAdmin && (
-          <button className="sidebar-btn nuevo-btn" onClick={() => onSelectView('admin')}>
-            ➕ Nuevo Producto
-          </button>
+          <>
+            <button className="sidebar-btn" onClick={() => onSelectView('nuevo')}>
+              ➕ Añadir producto
+            </button>
+            <button className="sidebar-btn" onClick={() => onSelectView('admin')}>
+              📦 Panel de productos
+            </button>
+            <button className="sidebar-btn" onClick={() => onSelectView('compras')}>
+              🧾 Lista de compras
+            </button>
+          </>
         )}
       </div>
     </aside>
